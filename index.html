@@ -230,6 +230,8 @@
     </p>
   </div>
 
+  <button onclick="party()">🎉 NOCH MEHR CHAOS 🎉</button>
+
   <div class="box">
     <h2 style="color:#ff00aa;">🌈 DIE 7 CHAKREN DER ORGELPFEIFE 🌈</h2>
     <p>🎹 Manual eins = Wurzelchakra<br />
@@ -259,8 +261,6 @@
       <button id="modal-confirm" style="margin-top:10px; font-family:Georgia,serif; font-size:1rem; padding:10px 20px; border-radius:6px; border:2px solid #000; background:#eee; cursor:pointer; animation:none;">Ja, ich bin bereit.</button>
     </div>
   </div>
-
-  <button onclick="party()">🎉 NOCH MEHR CHAOS 🎉</button>
 
   <div class="box">
     <h2 class="meme">PEACE. LOVE. ORGELPUNKT.</h2>
@@ -794,55 +794,65 @@
       '⚠️ Fehler: Zu viel Ernsthaftigkeit in Ihrer Anfrage erkannt.',
     ];
     tantraBtn.addEventListener('click', () => {
-      tantraResult.textContent = tantraResponses[Math.floor(Math.random() * tantraResponses.length)];
+      tantraResult.innerHTML = tantraResponses[Math.floor(Math.random() * tantraResponses.length)] +
+        '<br /><span style="font-weight:normal; font-size:0.9rem; color:#a200ff;">Ich freue mich auf deinen Gong 🔔🍑</span>';
+      tantraBtn.textContent = '🕉️✅ Gebucht!';
       showAchievementSafe('Tantra-Workshop "gebucht" 🧘');
 
-      // Ram Dass image flies out directly from the button, independent of the
-      // "NOCH MEHR CHAOS" meme system
+      // a whole spray of Ram Dass photos bursts out of the button at once,
+      // independent of the "NOCH MEHR CHAOS" meme system
       const rect = tantraBtn.getBoundingClientRect();
-      const img = document.createElement('img');
-      img.src = 'images/ram-dass.png';
-      img.className = 'ram-dass-img';
-      img.style.cssText = `
-        position: fixed; z-index: 99994;
-        left: ${rect.left + rect.width / 2}px; top: ${rect.top + rect.height / 2}px;
-        width: 40px; height: auto; border-radius: 10px; border: 3px solid #a200ff;
-        box-shadow: 0 0 20px rgba(162,0,255,0.6);
-        opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
-        transition: opacity 0.4s ease, transform 1.8s cubic-bezier(.2,.8,.3,1);
-      `;
-      document.body.appendChild(img);
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+      const SPRAY_COUNT = 10;
 
-      const relocate = () => {
-        const x = Math.random() * (window.innerWidth - 220) + 110;
-        const y = Math.random() * (window.innerHeight * 0.6) + 80;
-        img.style.left = x + 'px';
-        img.style.top = y + 'px';
-        img.style.transform = `translate(-50%, -50%) scale(1) rotate(${(Math.random() * 40 - 20).toFixed(0)}deg)`;
-      };
+      for (let i = 0; i < SPRAY_COUNT; i++) {
+        const img = document.createElement('img');
+        img.src = 'images/ram-dass.png';
+        img.className = 'ram-dass-img';
+        img.style.cssText = `
+          position: fixed; z-index: 99994;
+          left: ${originX}px; top: ${originY}px;
+          width: 40px; height: auto; border-radius: 10px; border: 3px solid #a200ff;
+          box-shadow: 0 0 20px rgba(162,0,255,0.6);
+          opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+          transition: opacity 0.4s ease, transform 1.8s cubic-bezier(.2,.8,.3,1);
+        `;
+        document.body.appendChild(img);
 
-      requestAnimationFrame(() => {
-        img.style.opacity = '0.9';
-        img.style.width = '220px';
-        relocate();
-      });
+        const relocate = () => {
+          const x = Math.random() * (window.innerWidth - 200) + 100;
+          const y = Math.random() * (window.innerHeight * 0.6) + 80;
+          img.style.left = x + 'px';
+          img.style.top = y + 'px';
+          img.style.transform = `translate(-50%, -50%) scale(1) rotate(${(Math.random() * 40 - 20).toFixed(0)}deg)`;
+        };
 
-      // clicking it triggers a trippy zoom-twirl instead of instantly
-      // teleporting: it spins/zooms in place first, then eases to a new spot
-      img.addEventListener('click', () => {
-        img.classList.add('zapped');
-        img.style.transition = 'transform 0.5s cubic-bezier(.3,1.6,.4,1)';
-        img.style.transform = `translate(-50%, -50%) scale(1.6) rotate(${720 + Math.random() * 360}deg)`;
-        showAchievementSafe('Ram Dass gezappt 🌀');
         setTimeout(() => {
-          img.style.transition = 'transform 1.4s cubic-bezier(.2,.8,.3,1)';
-          relocate();
-          setTimeout(() => img.classList.remove('zapped'), 1450);
-        }, 520);
-      });
+          requestAnimationFrame(() => {
+            img.style.opacity = '0.9';
+            img.style.width = (140 + Math.random() * 80) + 'px';
+            relocate();
+          });
+        }, i * 60);
 
-      setTimeout(() => { img.style.opacity = '0'; }, 6000);
-      setTimeout(() => { img.remove(); }, 6600);
+        // clicking one triggers a trippy zoom-twirl instead of instantly
+        // teleporting: it spins/zooms in place first, then eases to a new spot
+        img.addEventListener('click', () => {
+          img.classList.add('zapped');
+          img.style.transition = 'transform 0.5s cubic-bezier(.3,1.6,.4,1)';
+          img.style.transform = `translate(-50%, -50%) scale(1.6) rotate(${720 + Math.random() * 360}deg)`;
+          showAchievementSafe('Ram Dass gezappt 🌀');
+          setTimeout(() => {
+            img.style.transition = 'transform 1.4s cubic-bezier(.2,.8,.3,1)';
+            relocate();
+            setTimeout(() => img.classList.remove('zapped'), 1450);
+          }, 520);
+        });
+
+        setTimeout(() => { img.style.opacity = '0'; }, 6000 + i * 60);
+        setTimeout(() => { img.remove(); }, 6600 + i * 60);
+      }
     });
     function showAchievementSafe(text) {
       if (typeof showAchievement === 'function') showAchievement(text);
