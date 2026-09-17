@@ -116,7 +116,9 @@
   html, body {
     margin: 0;
     min-height: 100%;
-    font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+    /* kein "cursive" im Stack: Handys ohne Comic Sans rendern das sonst
+       als Schreibschrift (iOS: Snell Roundhand) und alles wirkt kursiv */
+    font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", sans-serif;
     background: linear-gradient(270deg, #ff0080, #ff8c00, #ffee00, #00ff88, #00c9ff, #a200ff, #ff0080);
     background-size: 1400% 1400%;
     animation: rainbowbg 12s ease infinite;
@@ -186,7 +188,7 @@
     margin: 10px 0;
   }
 
-  .doge { font-family: "Comic Sans MS", cursive; color: #7a5c00; font-size: 1.4rem; line-height: 2.2rem; }
+  .doge { font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", sans-serif; color: #7a5c00; font-size: 1.4rem; line-height: 2.2rem; }
 
   button {
     font-family: inherit;
